@@ -9,16 +9,21 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
+
+<link rel="stylesheet" type="text/css" href="resources/css/estilo.css">
+
 </head>
 <body>
-
-	<form action="LoginServlet" method="post">
-	
-		<input type="text" id="login" name="login">
-		<br/>
-		<input type="text" id="senha" name="senha">
-		<br/>
-		<input type="submit" value="Logar"/>
-	</form>
+	<div class="login-page">
+  		<div class="form">
+			<form action="LoginServlet" method="post" class="login-form">
+				<input type="text" placeholder="login" id="login" name="login">
+				<br/>
+				<input type="text" placeholder="senha" id="senha" name="senha">
+				<br/>
+				<button type="submit" value="Logar">logar</button>
+			</form>
+	  	</div>
+	</div>
 </body>
 </html>
