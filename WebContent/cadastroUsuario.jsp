@@ -33,6 +33,11 @@
 							value="${ user.senha }"></td>
 					</tr>
 					<tr>
+						<td>Nome:</td>
+						<td><input type="text" id="nome" name="nome"
+							value="${ user.nome }"></td>
+					</tr>
+					<tr>
 						<td></td>
 						<td><input type="submit" value="Salvar"></td>
 					</tr>
@@ -43,14 +48,21 @@
 
 	<div class="container">
 		<table class="responsive-table">
+			<tr>
+				<th>ID</th>
+				<th>Usuário</th>
+				<th>Nome</th>
+				<th>Delete</th>
+				<th>Editar</th>
+			</tr>
 			<c:forEach items="${ usuarios }" var="user">
 				<tr>
 					<td style="width: 150px"><c:out value="${ user.id }"></c:out></td>
 					<td style="width: 150px"><c:out value="${ user.login }"></c:out></td>
-					<td><c:out value="${ user.senha }"></c:out></td>
+					<td><c:out value="${ user.nome }"></c:out></td>
 
-					<td><a href="salvarUsuario?acao=delete&user=${ user.login }">Excluir</a></td>
-					<td><a href="salvarUsuario?acao=editar&user=${ user.login }">Editar</a></td>
+					<td><a href="salvarUsuario?acao=delete&user=${ user.login }"><img src="resources/img/excluir.png" width="20px" height="20px" title="Excluir"></a></td>
+					<td><a href="salvarUsuario?acao=editar&user=${ user.login }"><img src="resources/img/editar.png" width="20px" height="20px" title="Editar"></a></td>
 				</tr>
 			</c:forEach>
 		</table>
