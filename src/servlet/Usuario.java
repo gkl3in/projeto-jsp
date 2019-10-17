@@ -38,6 +38,12 @@ public class Usuario extends HttpServlet {
 				BeanCursoJsp beanCursoJsp = daoUsuario.consultar(user);
 				RequestDispatcher view = request.getRequestDispatcher("/cadastroUsuario.jsp");
 				request.setAttribute("user", beanCursoJsp);
+				request.setAttribute("usuarios", daoUsuario.listarUsuarios());
+				view.forward(request, response);
+			}
+			else if (acao.equalsIgnoreCase("listartodos")) {
+				RequestDispatcher view = request.getRequestDispatcher("/cadastroUsuario.jsp");
+				request.setAttribute("usuarios", daoUsuario.listarUsuarios());
 				view.forward(request, response);
 			}
 		} catch(Exception e) {
@@ -47,29 +53,42 @@ public class Usuario extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String id = request.getParameter("id");
-		String login = request.getParameter("login");
-		String senha = request.getParameter("senha");
-		String nome = request.getParameter("nome");
-		BeanCursoJsp usuario = new BeanCursoJsp();
-		usuario.setLogin(login);
-		usuario.setSenha(senha);
-		usuario.setId(!id.isEmpty() ? Long.parseLong(id) : 0);
-		usuario.setNome(nome);
+		String acao = request.getParameter("acao");
 		
-		if (id == null || id.isEmpty()) {
-			daoUsuario.salvar(usuario);			
+		if (acao != null && acao.equalsIgnoreCase("reset")) {
+			try {
+				RequestDispatcher view = request.getRequestDispatcher("/cadastroUsuario.jsp");
+				request.setAttribute("usuarios", daoUsuario.listarUsuarios());
+				view.forward(request, response);
+				
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		} else {
-			daoUsuario.atualizar(usuario);
-		}
-		
-		try {
-			RequestDispatcher view = request.getRequestDispatcher("/cadastroUsuario.jsp");
-			request.setAttribute("usuarios", daoUsuario.listarUsuarios());
-			view.forward(request, response);
+			String id = request.getParameter("id");
+			String login = request.getParameter("login");
+			String senha = request.getParameter("senha");
+			String nome = request.getParameter("nome");
+			BeanCursoJsp usuario = new BeanCursoJsp();
+			usuario.setLogin(login);
+			usuario.setSenha(senha);
+			usuario.setId(!id.isEmpty() ? Long.parseLong(id) : 0);
+			usuario.setNome(nome);
 			
-		} catch(Exception e) {
-			e.printStackTrace();
+			if (id == null || id.isEmpty()) {
+				daoUsuario.salvar(usuario);			
+			} else {
+				daoUsuario.atualizar(usuario);
+			}
+			
+			try {
+				RequestDispatcher view = request.getRequestDispatcher("/cadastroUsuario.jsp");
+				request.setAttribute("usuarios", daoUsuario.listarUsuarios());
+				view.forward(request, response);
+				
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
