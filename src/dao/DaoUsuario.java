@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sun.corba.se.spi.orbutil.fsm.State;
-
 import beans.BeanCursoJsp;
 import connection.SingleConnection;
 
@@ -51,9 +49,9 @@ public class DaoUsuario {
 		while (resultado.next()) {
 
 			BeanCursoJsp usuario = new BeanCursoJsp();
-			usuario.setLogin(resultado.getString(1));
-			usuario.setSenha(resultado.getString(2));
-			usuario.setId(resultado.getLong(3));
+			usuario.setLogin(resultado.getString(2));
+			usuario.setSenha(resultado.getString(3));
+			usuario.setId(resultado.getLong(1));
 			usuario.setNome(resultado.getString(4));
 			listarUsuarios.add(usuario);
 		}
@@ -94,7 +92,6 @@ public class DaoUsuario {
 			
 			return beanCursoJsp;
 		}
-		
 		return null;
 	}
 
@@ -116,6 +113,13 @@ public class DaoUsuario {
 				e1.printStackTrace();
 			}
 		}
+	}
+	
+	public boolean validarLogin(String login) throws SQLException {
+		String sql = "select * from usuario where login='" + login + "'";
 		
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		ResultSet resultSet = preparedStatement.executeQuery();
+		return resultSet.next() ? false : true;
 	}
 }
