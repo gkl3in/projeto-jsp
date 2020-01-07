@@ -22,30 +22,27 @@ public class ServletsProduto extends HttpServlet {
 		super();
 	}
 
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		try {
 			String acao = request.getParameter("acao");
 			String produto = request.getParameter("produto");
 
 			if (acao.equalsIgnoreCase("delete")) {
 				daoProduto.delete(produto);
-				RequestDispatcher view = request
-						.getRequestDispatcher("/cadastroProduto.jsp");
+				RequestDispatcher view = request.getRequestDispatcher("/cadastroProduto.jsp");
 				request.setAttribute("produtos", daoProduto.listar());
 				view.forward(request, response);
 			} else if (acao.equalsIgnoreCase("editar")) {
 
 				Produto beanCursoJsp = daoProduto.consultar(produto);
 
-				RequestDispatcher view = request
-						.getRequestDispatcher("/cadastroProduto.jsp");
+				RequestDispatcher view = request.getRequestDispatcher("/cadastroProduto.jsp");
 				request.setAttribute("produto", beanCursoJsp);
 				view.forward(request, response);
 			} else if (acao.equalsIgnoreCase("listartodos")) {
 
-				RequestDispatcher view = request
-						.getRequestDispatcher("/cadastroProduto.jsp");
+				RequestDispatcher view = request.getRequestDispatcher("/cadastroProduto.jsp");
 				request.setAttribute("produtos", daoProduto.listar());
 				view.forward(request, response);
 			}
@@ -55,15 +52,14 @@ public class ServletsProduto extends HttpServlet {
 		}
 	}
 
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 		String acao = request.getParameter("acao");
 
 		if (acao != null && acao.equalsIgnoreCase("reset")) {
 			try {
-				RequestDispatcher view = request
-						.getRequestDispatcher("/cadastroProduto.jsp");
+				RequestDispatcher view = request.getRequestDispatcher("/cadastroProduto.jsp");
 				request.setAttribute("produtos", daoProduto.listar());
 				view.forward(request, response);
 
@@ -87,22 +83,25 @@ public class ServletsProduto extends HttpServlet {
 				String msg = null;
 				boolean podeInserir = true;
 
-				if (id == null || id.isEmpty() && !daoProduto.validarNome(nome)) {// QUANDO
-																					// FDOR
-																					// PRODUTO
-																					// NOVO
+				if (id == null || id.isEmpty() && !daoProduto.validarNome(nome)) {
 					msg = "Produto já existe com o mesmo nome!";
 					podeInserir = false;
-
+				} else if (nome == null || nome.isEmpty()) {
+					msg = "Produto sem nome cadastrado!";
+					podeInserir = false;
+				} else if (quantidade == null || quantidade.isEmpty()) {
+					msg = "Produto sem quantidade cadastrado!";
+					podeInserir = false;
+				} else if (valor == null || valor.isEmpty()) {
+					msg = "Produto sem valor cadastrado!";
+					podeInserir = false;
 				}
 
 				if (msg != null) {
 					request.setAttribute("msg", msg);
 				}
 
-				if (id == null || id.isEmpty() && daoProduto.validarNome(nome)
-						&& podeInserir) {
-
+				if (id == null || id.isEmpty() && daoProduto.validarNome(nome) && podeInserir) {
 					daoProduto.salvar(produto);
 
 				} else if (id != null && !id.isEmpty() && podeInserir) {
@@ -113,8 +112,7 @@ public class ServletsProduto extends HttpServlet {
 					request.setAttribute("produto", produto);
 				}
 
-				RequestDispatcher view = request
-						.getRequestDispatcher("/cadastroProduto.jsp");
+				RequestDispatcher view = request.getRequestDispatcher("/cadastroProduto.jsp");
 				request.setAttribute("produtos", daoProduto.listar());
 				view.forward(request, response);
 

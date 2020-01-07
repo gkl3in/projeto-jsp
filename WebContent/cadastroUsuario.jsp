@@ -11,9 +11,10 @@
 <body>
 	<center>
 		<h1>Cadastro de usuário</h1>
-		<h3 style="color:red;">${ msg }</h3>
+		<h3 style="color: red;">${ msg }</h3>
 	</center>
-	<form action="salvarUsuario" method="post" id="formUser">
+	<form action="salvarUsuario" method="post" id="formUser"
+		onsubmit="return validarCampos()">
 		<ul class="form-style-1">
 			<li>
 				<table>
@@ -44,7 +45,9 @@
 					</tr>
 					<tr>
 						<td></td>
-						<td><input type="submit" value="Salvar"> <input type="submit" value="Cancelar" onclick="document.getElementById('formUser').action= 'salvarUsuario?acao=reset'"></td>
+						<td><input type="submit" value="Salvar"> <input
+							type="submit" value="Cancelar"
+							onclick="document.getElementById('formUser').action= 'salvarUsuario?acao=reset'"></td>
 					</tr>
 				</table>
 			</li>
@@ -68,11 +71,33 @@
 					<td><c:out value="${ user.nome }"></c:out></td>
 					<td><c:out value="${ user.fone }"></c:out></td>
 
-					<td><a href="salvarUsuario?acao=delete&user=${ user.id }"><img src="resources/img/excluir.png" width="20px" height="20px" title="Excluir"></a></td>
-					<td><a href="salvarUsuario?acao=editar&user=${ user.id }"><img src="resources/img/editar.png" width="20px" height="20px" title="Editar"></a></td>
+					<td><a href="salvarUsuario?acao=delete&user=${ user.id }"><img
+							src="resources/img/excluir.png" width="20px" height="20px"
+							title="Excluir"></a></td>
+					<td><a href="salvarUsuario?acao=editar&user=${ user.id }"><img
+							src="resources/img/editar.png" width="20px" height="20px"
+							title="Editar"></a></td>
 				</tr>
 			</c:forEach>
 		</table>
 	</div>
+	<script type="text/javascript">
+		function validarCampos() {
+			if (document.getElementById('formUser').action == "http://localhost:8080/projeto-jsp/salvarUsuario?acao=reset"){
+				return true;
+			} else if (document.getElementById('login').value == '') {
+				alert('Informe o Login!');
+				return false;
+			} else if (document.getElementById('nome').value == '') {
+				alert('Informe o nome!');
+				return false;
+			} else if (document.getElementById('senha').value == '') {
+				alert('Informe o senha!');
+				return false;
+			} else {
+				return true;
+			}
+		}
+	</script>
 </body>
 </html>
