@@ -70,20 +70,23 @@ public class Usuario extends HttpServlet {
 			String login = request.getParameter("login");
 			String senha = request.getParameter("senha");
 			String nome = request.getParameter("nome");
+			String fone = request.getParameter("fone");
 			BeanCursoJsp usuario = new BeanCursoJsp();
 			usuario.setLogin(login);
 			usuario.setSenha(senha);
-			usuario.setId(!id.isEmpty() ? Long.parseLong(id) : 0);
+			usuario.setId(!id.isEmpty() ? Long.parseLong(id) : null);
 			usuario.setNome(nome);
+			usuario.setFone(fone);
 			
 			try {
 				if ((id == null || id.isEmpty()) && daoUsuario.validarLogin(login)) {
-					daoUsuario.salvar(usuario);			
+					daoUsuario.salvar(usuario);
 				} else if ((id != null && !id.isEmpty())
 						&& (daoUsuario.validarLogin(login) 
 						|| daoUsuario.consultar(id).getLogin().equalsIgnoreCase(login))) {
 					daoUsuario.atualizar(usuario);
 				} else {
+					request.setAttribute("user", usuario);
 					request.setAttribute("msg", "Login já existente");
 				}
 			} catch (SQLException e1) {

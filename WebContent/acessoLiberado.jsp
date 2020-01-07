@@ -11,5 +11,6 @@
 	<h3>Seja bem vindo ao sistema em JSP</h3>
 	
 	<a href="salvarUsuario?acao=listartodos"><img src="resources/img/user-female-icon.png" width="100px" height="100px" title="Cadastro de usuários"></a>
+	<a href="salvarProduto?acao=listartodos"><img width="100px" height="100px" title="Cadastro de Produto" alt="Cadastro de Produto" src="resources/img/icone-produto.png"> </a>
 </body>
 </html>
