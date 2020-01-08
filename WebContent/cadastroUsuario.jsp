@@ -7,8 +7,14 @@
 <meta charset="ISO-8859-1">
 <title>Cadastro de usuários</title>
 <link rel="stylesheet" type="text/css" href="resources/css/cadastro.css">
+
+<!-- Adicionando JQuery -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+	integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+	crossorigin="anonymous"></script>
 </head>
 <body>
+	<a href="acessoLiberado.jsp">Início</a>
 	<center>
 		<h1>Cadastro de usuário</h1>
 		<h3 style="color: red;">${ msg }</h3>
@@ -44,6 +50,32 @@
 							value="${ user.fone }"></td>
 					</tr>
 					<tr>
+						<td>CEP:</td>
+						<td><input type="text" id="cep" name="cep"
+							onblur="consultaCep();"></td>
+					</tr>
+					<tr>
+						<td>Rua:</td>
+						<td><input type="text" id="rua" name="rua"
+							onblur="consultaCep();"></td>
+					</tr>
+					<tr>
+						<td>bairro:</td>
+						<td><input type="text" id="bairro" name="bairro"
+							onblur="consultaCep();"></td>
+					</tr>
+					<tr>
+						<td>cidade:</td>
+						<td><input type="text" id="cidade" name="cidade"
+							onblur="consultaCep();"></td>
+					</tr>
+					<tr>
+						<td>uf:</td>
+						<td><input type="text" id="uf" name="uf"
+							onblur="consultaCep();"></td>
+					</tr>
+					<tr>
+
 						<td></td>
 						<td><input type="submit" value="Salvar"> <input
 							type="submit" value="Cancelar"
@@ -83,7 +115,7 @@
 	</div>
 	<script type="text/javascript">
 		function validarCampos() {
-			if (document.getElementById('formUser').action == "http://localhost:8080/projeto-jsp/salvarUsuario?acao=reset"){
+			if (document.getElementById('formUser').action == "http://localhost:8080/projeto-jsp/salvarUsuario?acao=reset") {
 				return true;
 			} else if (document.getElementById('login').value == '') {
 				alert('Informe o Login!');
@@ -98,6 +130,54 @@
 				return true;
 			}
 		}
+		
+		function limpa_formulário_cep() {
+            // Limpa valores do formulário de cep.
+            $("#rua").val("");
+            $("#bairro").val("");
+            $("#cidade").val("");
+            $("#uf").val("");
+            $("#ibge").val("");
+        }
+		
+		function consultaCep(){
+            var cep = $("#cep").val().replace(/\D/g, '');
+
+            if (cep != "") {
+                var validacep = /^[0-9]{8}$/;
+
+                if(validacep.test(cep)) {
+                    $("#rua").val("...");
+                    $("#bairro").val("...");
+                    $("#cidade").val("...");
+                    $("#uf").val("...");
+                    $("#ibge").val("...");
+
+                    //Consulta o webservice viacep.com.br/
+                    $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+
+                        if (!("erro" in dados)) {
+                            $("#rua").val(dados.logradouro);
+                            $("#bairro").val(dados.bairro);
+                            $("#cidade").val(dados.localidade);
+                            $("#uf").val(dados.uf);
+                            $("#ibge").val(dados.ibge);
+                        }
+                        else {
+                            limpa_formulário_cep();
+                            alert("CEP não encontrado.");
+                        }
+                    });
+                }
+                else {
+                    limpa_formulário_cep();
+                    alert("Formato de CEP inválido.");
+                }
+            }
+            else {
+                limpa_formulário_cep();
+            }
+        }
 	</script>
 </body>
 </html>
