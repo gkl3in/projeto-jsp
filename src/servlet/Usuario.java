@@ -71,13 +71,17 @@ public class Usuario extends HttpServlet {
 			String login = request.getParameter("login");
 			String senha = request.getParameter("senha");
 			String nome = request.getParameter("nome");
-			String fone = request.getParameter("fone");
 			BeanCursoJsp usuario = new BeanCursoJsp();
 			usuario.setLogin(login);
 			usuario.setSenha(senha);
 			usuario.setId(!id.isEmpty() ? Long.parseLong(id) : null);
 			usuario.setNome(nome);
-			usuario.setFone(fone);
+			usuario.setFone(request.getParameter("fone"));
+			usuario.setBairro(request.getParameter("bairro"));
+			usuario.setRua(request.getParameter("rua"));
+			usuario.setCidade(request.getParameter("cidade"));
+			usuario.setCep(request.getParameter("cep"));
+			usuario.setEstado(request.getParameter("uf"));
 
 			try {
 
@@ -106,6 +110,7 @@ public class Usuario extends HttpServlet {
 			try {
 				RequestDispatcher view = request.getRequestDispatcher("/cadastroUsuario.jsp");
 				request.setAttribute("usuarios", daoUsuario.listarUsuarios());
+				request.setAttribute("msg", "Usuário " + usuario.getNome() + " cadastrado com sucesso!");
 				view.forward(request, response);
 
 			} catch (Exception e) {

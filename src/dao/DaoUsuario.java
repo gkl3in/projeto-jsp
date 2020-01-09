@@ -21,12 +21,18 @@ public class DaoUsuario {
 	public void salvar(BeanCursoJsp usuario) {
 		
 		try {
-			String sql = "insert into usuario(login, senha, nome, fone) values (?, ?, ?, ?)";
+			String sql = "insert into usuario(login, senha, nome, fone, cep, rua, bairro, cidade, estado) "
+					+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement insert = connection.prepareStatement(sql);
 			insert.setString(1, usuario.getLogin());
 			insert.setString(2, usuario.getSenha());
 			insert.setString(3, usuario.getNome());
 			insert.setString(4, usuario.getFone());
+			insert.setString(5, usuario.getCep());
+			insert.setString(6, usuario.getRua());
+			insert.setString(7, usuario.getBairro());
+			insert.setString(8, usuario.getCidade());
+			insert.setString(9, usuario.getEstado());
 			insert.execute();
 			connection.commit();
 		} catch(Exception e) {
@@ -43,7 +49,7 @@ public class DaoUsuario {
 		
 		List<BeanCursoJsp> listarUsuarios = new ArrayList<BeanCursoJsp>();
 		
-		String sql = "select * from usuario";
+		String sql = "select * from usuario order by id";
 		PreparedStatement statement = connection.prepareStatement(sql);
 		ResultSet resultado = statement.executeQuery();
 		
@@ -55,6 +61,11 @@ public class DaoUsuario {
 			usuario.setId(resultado.getLong(1));
 			usuario.setNome(resultado.getString(4));
 			usuario.setFone(resultado.getString(5));
+			usuario.setCep(resultado.getString(6));
+			usuario.setRua(resultado.getString(7));
+			usuario.setBairro(resultado.getString(8));
+			usuario.setCidade(resultado.getString(9));
+			usuario.setEstado(resultado.getString(10));
 			listarUsuarios.add(usuario);
 		}
 		return listarUsuarios;
@@ -92,6 +103,11 @@ public class DaoUsuario {
 			beanCursoJsp.setId(resultSet.getLong("id"));
 			beanCursoJsp.setNome(resultSet.getString("nome"));
 			beanCursoJsp.setFone(resultSet.getString("fone"));
+			beanCursoJsp.setBairro(resultSet.getString("bairro"));
+			beanCursoJsp.setCep(resultSet.getString("cep"));
+			beanCursoJsp.setCidade(resultSet.getString("cidade"));
+			beanCursoJsp.setEstado(resultSet.getString("estado"));
+			beanCursoJsp.setRua(resultSet.getString("rua"));
 			
 			return beanCursoJsp;
 		}
@@ -100,13 +116,18 @@ public class DaoUsuario {
 
 	public void atualizar(BeanCursoJsp usuario) {
 		try {
-			String sql = "update usuario set login = ?, senha = ?, nome = ?, fone = ? where id = " + usuario.getId();
+			String sql = "update usuario set login = ?, senha = ?, nome = ?, fone = ?, cep = ?, rua = ?, bairro = ?, cidade = ?, estado = ? where id = " + usuario.getId();
 			
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, usuario.getLogin());
 			statement.setString(2, usuario.getSenha());
 			statement.setString(3, usuario.getNome());
 			statement.setString(4, usuario.getFone());
+			statement.setString(5, usuario.getCep());
+			statement.setString(6, usuario.getRua());
+			statement.setString(7, usuario.getBairro());
+			statement.setString(8, usuario.getCidade());
+			statement.setString(9, usuario.getEstado());
 			statement.executeUpdate();
 			connection.commit();
 		} catch(Exception e) {
