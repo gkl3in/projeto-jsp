@@ -20,7 +20,7 @@
 		<h3 style="color: red;">${ msg }</h3>
 	</center>
 	<form action="salvarUsuario" method="post" id="formUser"
-		onsubmit="return validarCampos()">
+		onsubmit="return validarCampos()" enctype="multipart/form-data">
 		<ul class="form-style-1">
 			<li>
 				<table>
@@ -70,6 +70,12 @@
 						onblur="consultaCep();" value="${ user.estado }"></td>
 					</tr>
 					<tr>
+						<td>
+							Foto:
+						</td>
+						<td><input type="file" name="foto" value="Foto"></td>
+					</tr>
+					<tr>
 
 						<td></td>
 						<td><input type="submit" value="Salvar"> <input
@@ -107,7 +113,7 @@
 							src="resources/img/editar.png" width="20px" height="20px"
 							title="Editar"></a></td>
 
-					<td><a href="salvarTelefones?user=${ user.id }"><img
+					<td><a href="salvarTelefones?acao=addFone&user=${ user.id }"><img
 							src="resources/img/phone.png" width="20px" height="20px"
 							title="Telefones"></a></td>
 				</tr>
