@@ -2,6 +2,7 @@ package servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,6 +10,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.tomcat.util.codec.binary.Base64;
 
 import beans.BeanCursoJsp;
 import dao.DaoUsuario;
@@ -74,7 +80,7 @@ public class Usuario extends HttpServlet {
 			BeanCursoJsp usuario = new BeanCursoJsp();
 			usuario.setLogin(login);
 			usuario.setSenha(senha);
-			usuario.setId(!id.isEmpty() ? Long.parseLong(id) : null);
+			usuario.setId((id != null && !id.isEmpty()) ? Long.parseLong(id) : null);
 			usuario.setNome(nome);
 			usuario.setFone(request.getParameter("fone"));
 			usuario.setBairro(request.getParameter("bairro"));
@@ -84,6 +90,20 @@ public class Usuario extends HttpServlet {
 			usuario.setEstado(request.getParameter("uf"));
 
 			try {
+				
+				/* Início upload de imagens */
+				if (ServletFileUpload.isMultipartContent(request)) {
+					
+					List<FileItem> fileItems = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+					
+					for (FileItem fileItem : fileItems) {
+						if (fileItem.getFieldName().equalsIgnoreCase("foto")) {
+							String foto = new Base64().encodeBase64String(fileItem.get());
+							System.out.println(foto);
+						}
+					}
+				}
+				/* fim upload de imagens */
 
 				if (login == null || login.isEmpty()) {
 					request.setAttribute("user", usuario);
@@ -103,7 +123,7 @@ public class Usuario extends HttpServlet {
 					request.setAttribute("user", usuario);
 					request.setAttribute("msg", "Login já existente");
 				}
-			} catch (SQLException e1) {
+			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 
