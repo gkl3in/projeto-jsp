@@ -64,7 +64,7 @@
 					<td style="width: 150px"><c:out value="${ fone.numero }"></c:out></td>
 					<td><c:out value="${ fone.tipo }"></c:out></td>
 
-					<td><a href="salvarUsuario?acao=delete&user=${ user.id }"><img
+					<td><a href="salvarTelefones?acao=deleteFone&foneId=${ fone.id }"><img
 							src="resources/img/excluir.png" width="20px" height="20px"
 							title="Excluir"></a></td>
 				</tr>
