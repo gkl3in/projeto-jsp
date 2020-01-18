@@ -14,6 +14,7 @@ public class BeanCursoJsp {
 	private String estado;
 	private String fotoBase64;
 	private String contentType;
+	private String tempFoto;
 	
 	public String getFotoBase64() {
 		return fotoBase64;
@@ -87,5 +88,10 @@ public class BeanCursoJsp {
 	}
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+	public String getTempFoto() {
+		
+		tempFoto = "data:" + contentType + ";base64," + fotoBase64;
+		return tempFoto;
 	}
 }

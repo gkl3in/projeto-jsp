@@ -1,9 +1,10 @@
 package servlet;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
+import java.io.OutputStream;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -38,22 +39,39 @@ public class Usuario extends HttpServlet {
 			String acao = request.getParameter("acao");
 			String user = request.getParameter("user");
 
-			if (acao.equalsIgnoreCase("delete")) {
+			if ("delete".equalsIgnoreCase(acao)) {
+
 				daoUsuario.delete(user);
 				RequestDispatcher view = request.getRequestDispatcher("/cadastroUsuario.jsp");
 				request.setAttribute("usuarios", daoUsuario.listarUsuarios());
 				view.forward(request, response);
-			} else if (acao.equalsIgnoreCase("editar")) {
+			} else if ("editar".equalsIgnoreCase(acao)) {
 
 				BeanCursoJsp beanCursoJsp = daoUsuario.consultar(user);
 				RequestDispatcher view = request.getRequestDispatcher("/cadastroUsuario.jsp");
 				request.setAttribute("user", beanCursoJsp);
 				request.setAttribute("usuarios", daoUsuario.listarUsuarios());
 				view.forward(request, response);
-			} else if (acao.equalsIgnoreCase("listartodos")) {
+			} else if ("listartodos".equalsIgnoreCase(acao)) {
+
 				RequestDispatcher view = request.getRequestDispatcher("/cadastroUsuario.jsp");
 				request.setAttribute("usuarios", daoUsuario.listarUsuarios());
 				view.forward(request, response);
+			} else if ("download".equalsIgnoreCase(acao)) {
+
+				BeanCursoJsp beanCursoJsp = daoUsuario.consultar(user);
+				if (beanCursoJsp != null) {
+					response.setHeader("Content-Disposition", "attachment;filename=arquivo." + 
+										beanCursoJsp.getContentType().split("\\/")[1]);
+					
+					byte[] imageFotoBytes = new Base64().decodeBase64(beanCursoJsp.getFotoBase64());
+					
+					OutputStream os = response.getOutputStream();
+					
+					os.write(imageFotoBytes);
+					os.flush();
+					os.close();
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

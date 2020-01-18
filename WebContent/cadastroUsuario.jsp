@@ -91,9 +91,8 @@
 		<table class="responsive-table">
 			<tr>
 				<th>ID</th>
-				<th>Usuário</th>
+				<th>Imagem</th>
 				<th>Nome</th>
-				<th>Telefone</th>
 				<th>Delete</th>
 				<th>Editar</th>
 				<th>Fones</th>
@@ -101,20 +100,20 @@
 			<c:forEach items="${ usuarios }" var="user">
 				<tr>
 					<td style="width: 150px"><c:out value="${ user.id }"></c:out></td>
-					<td style="width: 150px"><c:out value="${ user.login }"></c:out></td>
+					<td><a href="salvarUsuario?acao=download&user=${ user.id }"><img src="<c:out value="${ user.tempFoto }"></c:out>" width="32px" height="32px"
+							title="Imagem do usuário"></a></td>
 					<td><c:out value="${ user.nome }"></c:out></td>
-					<td><c:out value="${ user.fone }"></c:out></td>
 
 					<td><a href="salvarUsuario?acao=delete&user=${ user.id }"><img
-							src="resources/img/excluir.png" width="20px" height="20px"
+							src="resources/img/excluir.png" width="32px" height="32px"
 							title="Excluir"></a></td>
 
 					<td><a href="salvarUsuario?acao=editar&user=${ user.id }"><img
-							src="resources/img/editar.png" width="20px" height="20px"
+							src="resources/img/editar.png" width="32px" height="32px"
 							title="Editar"></a></td>
 
 					<td><a href="salvarTelefones?acao=addFone&user=${ user.id }"><img
-							src="resources/img/phone.png" width="20px" height="20px"
+							src="resources/img/phone.png" width="32px" height="32px"
 							title="Telefones"></a></td>
 				</tr>
 			</c:forEach>

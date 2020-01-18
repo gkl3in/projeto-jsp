@@ -21,7 +21,8 @@ public class DaoUsuario {
 	public void salvar(BeanCursoJsp usuario) {
 		
 		try {
-			String sql = "insert into usuario(login, senha, nome, fone, cep, rua, bairro, cidade, estado, fotobase64, contenttype ) "
+			String sql = "insert into usuario(login, senha, nome, fone, cep, rua,"
+					+ " bairro, cidade, estado, fotobase64, contenttype ) "
 					+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement insert = connection.prepareStatement(sql);
 			insert.setString(1, usuario.getLogin());
@@ -58,16 +59,19 @@ public class DaoUsuario {
 		while (resultado.next()) {
 
 			BeanCursoJsp usuario = new BeanCursoJsp();
-			usuario.setLogin(resultado.getString(2));
-			usuario.setSenha(resultado.getString(3));
-			usuario.setId(resultado.getLong(1));
-			usuario.setNome(resultado.getString(4));
-			usuario.setFone(resultado.getString(5));
-			usuario.setCep(resultado.getString(6));
-			usuario.setRua(resultado.getString(7));
-			usuario.setBairro(resultado.getString(8));
-			usuario.setCidade(resultado.getString(9));
-			usuario.setEstado(resultado.getString(10));
+			usuario.setLogin(resultado.getString("login"));
+			usuario.setSenha(resultado.getString("senha"));
+			usuario.setId(resultado.getLong("id"));
+			usuario.setNome(resultado.getString("nome"));
+			usuario.setFone(resultado.getString("fone"));
+			usuario.setCep(resultado.getString("cep"));
+			usuario.setRua(resultado.getString("rua"));
+			usuario.setBairro(resultado.getString("bairro"));
+			usuario.setCidade(resultado.getString("cidade"));
+			usuario.setEstado(resultado.getString("estado"));
+			usuario.setFotoBase64(resultado.getString("fotobase64"));
+			usuario.setContentType(resultado.getString("contenttype"));
+			
 			listarUsuarios.add(usuario);
 		}
 		return listarUsuarios;
@@ -110,6 +114,8 @@ public class DaoUsuario {
 			beanCursoJsp.setCidade(resultSet.getString("cidade"));
 			beanCursoJsp.setEstado(resultSet.getString("estado"));
 			beanCursoJsp.setRua(resultSet.getString("rua"));
+			beanCursoJsp.setFotoBase64(resultSet.getString("fotobase64"));
+			beanCursoJsp.setContentType(resultSet.getString("contenttype"));
 			
 			return beanCursoJsp;
 		}
