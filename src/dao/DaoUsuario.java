@@ -22,8 +22,8 @@ public class DaoUsuario {
 		
 		try {
 			String sql = "insert into usuario(login, senha, nome, fone, cep, rua,"
-					+ " bairro, cidade, estado, fotobase64, contenttype ) "
-					+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+					+ " bairro, cidade, estado, fotobase64, contenttype, curriculo_foto_base64, content_type_curriculo ) "
+					+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement insert = connection.prepareStatement(sql);
 			insert.setString(1, usuario.getLogin());
 			insert.setString(2, usuario.getSenha());
@@ -36,8 +36,11 @@ public class DaoUsuario {
 			insert.setString(9, usuario.getEstado());
 			insert.setString(10, usuario.getFotoBase64());
 			insert.setString(11, usuario.getContentType());
+			insert.setString(12, usuario.getCurriculoBase64());
+			insert.setString(13, usuario.getContentTypeCurriculo());
 			insert.execute();
 			connection.commit();
+
 		} catch(Exception e) {
 			e.printStackTrace();
 			try {
@@ -71,6 +74,8 @@ public class DaoUsuario {
 			usuario.setEstado(resultado.getString("estado"));
 			usuario.setFotoBase64(resultado.getString("fotobase64"));
 			usuario.setContentType(resultado.getString("contenttype"));
+			usuario.setCurriculoBase64(resultado.getString("curriculo_foto_base64"));
+			usuario.setContentTypeCurriculo(resultado.getString("content_type_curriculo"));
 			
 			listarUsuarios.add(usuario);
 		}
@@ -116,6 +121,8 @@ public class DaoUsuario {
 			beanCursoJsp.setRua(resultSet.getString("rua"));
 			beanCursoJsp.setFotoBase64(resultSet.getString("fotobase64"));
 			beanCursoJsp.setContentType(resultSet.getString("contenttype"));
+			beanCursoJsp.setContentTypeCurriculo(resultSet.getString("content_type_curriculo"));
+			beanCursoJsp.setCurriculoBase64(resultSet.getString("curriculo_foto_base64"));
 			
 			return beanCursoJsp;
 		}
@@ -124,7 +131,9 @@ public class DaoUsuario {
 
 	public void atualizar(BeanCursoJsp usuario) {
 		try {
-			String sql = "update usuario set login = ?, senha = ?, nome = ?, fone = ?, cep = ?, rua = ?, bairro = ?, cidade = ?, estado = ? where id = " + usuario.getId();
+			String sql = "update usuario set login = ?, senha = ?, nome = ?, fone = ?, cep = ?, rua = ?, "
+					+ "bairro = ?, cidade = ?, estado = ?, fotobase64 = ?, contenttype = ?, content_type_curriculo = ?, "
+					+ " curriculo_foto_base64 = ? where id = " + usuario.getId();
 			
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, usuario.getLogin());
@@ -136,8 +145,14 @@ public class DaoUsuario {
 			statement.setString(7, usuario.getBairro());
 			statement.setString(8, usuario.getCidade());
 			statement.setString(9, usuario.getEstado());
+			statement.setString(10, usuario.getFotoBase64());
+			statement.setString(11, usuario.getContentType());
+			statement.setString(12, usuario.getContentTypeCurriculo());
+			statement.setString(13, usuario.getCurriculoBase64());
+
 			statement.executeUpdate();
 			connection.commit();
+
 		} catch(Exception e) {
 			e.printStackTrace();
 			try {

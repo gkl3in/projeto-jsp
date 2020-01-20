@@ -60,15 +60,26 @@ public class Usuario extends HttpServlet {
 			} else if ("download".equalsIgnoreCase(acao)) {
 
 				BeanCursoJsp beanCursoJsp = daoUsuario.consultar(user);
+
 				if (beanCursoJsp != null) {
-					response.setHeader("Content-Disposition", "attachment;filename=arquivo." + 
-										beanCursoJsp.getContentType().split("\\/")[1]);
 					
-					byte[] imageFotoBytes = new Base64().decodeBase64(beanCursoJsp.getFotoBase64());
+					String contentType = "";
+					byte[] fileBytes = null;
+					String tipo = request.getParameter("tipo");
+					
+					if ("imagem".equalsIgnoreCase(tipo)) {
+						contentType = beanCursoJsp.getContentType();
+						fileBytes = new Base64().decodeBase64(beanCursoJsp.getFotoBase64());
+					} else if ("curriculo".equalsIgnoreCase(tipo)) {
+						contentType = beanCursoJsp.getContentTypeCurriculo();
+						fileBytes = new Base64().decodeBase64(beanCursoJsp.getCurriculoBase64());
+					}
+
+					response.setHeader("Content-Disposition", "attachment;filename=arquivo." + contentType.split("\\/")[1]);
 					
 					OutputStream os = response.getOutputStream();
 					
-					os.write(imageFotoBytes);
+					os.write(fileBytes);
 					os.flush();
 					os.close();
 				}
@@ -116,11 +127,25 @@ public class Usuario extends HttpServlet {
 
 					Part imagemFoto = request.getPart("foto");
 					
-					String fotoBase64 = new Base64().
-							encodeBase64String(converteStreamParaByte(imagemFoto.getInputStream()));
+					if (imagemFoto != null) {
+
+						String fotoBase64 = new Base64().
+								encodeBase64String(converteStreamParaByte(imagemFoto.getInputStream()));
+						
+						usuario.setFotoBase64(fotoBase64);
+						usuario.setContentType(imagemFoto.getContentType());
+					}
 					
-					usuario.setFotoBase64(fotoBase64);
-					usuario.setContentType(imagemFoto.getContentType());
+					Part curriculoPdf = request.getPart("curriculo");
+					
+					if (curriculoPdf != null) {
+
+						String curriculoBase64 = new Base64().
+								encodeBase64String(converteStreamParaByte(curriculoPdf.getInputStream()));
+						
+						usuario.setCurriculoBase64(curriculoBase64);
+						usuario.setContentTypeCurriculo(curriculoPdf.getContentType());
+					}
 				}
 				/* fim upload de imagens */
 

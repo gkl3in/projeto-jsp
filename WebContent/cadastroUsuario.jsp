@@ -76,6 +76,12 @@
 						<td><input type="file" name="foto" value="Foto"></td>
 					</tr>
 					<tr>
+						<td>
+							Currículo:
+						</td>
+						<td><input type="file" name="curriculo" value="curriculo"></td>
+					</tr>
+					<tr>
 
 						<td></td>
 						<td><input type="submit" value="Salvar"> <input
@@ -92,6 +98,7 @@
 			<tr>
 				<th>ID</th>
 				<th>Imagem</th>
+				<th>Currículo</th>
 				<th>Nome</th>
 				<th>Delete</th>
 				<th>Editar</th>
@@ -100,8 +107,9 @@
 			<c:forEach items="${ usuarios }" var="user">
 				<tr>
 					<td style="width: 150px"><c:out value="${ user.id }"></c:out></td>
-					<td><a href="salvarUsuario?acao=download&user=${ user.id }"><img src="<c:out value="${ user.tempFoto }"></c:out>" width="32px" height="32px"
+					<td><a href="salvarUsuario?acao=download&tipo=imagem&user=${ user.id }"><img src="<c:out value="${ user.tempFoto }"></c:out>" width="32px" height="32px"
 							title="Imagem do usuário"></a></td>
+					<td><a href="salvarUsuario?acao=download&tipo=curriculo&user=${ user.id }">Currículo</a></td>
 					<td><c:out value="${ user.nome }"></c:out></td>
 
 					<td><a href="salvarUsuario?acao=delete&user=${ user.id }"><img
