@@ -73,13 +73,17 @@
 						<td>
 							Foto:
 						</td>
-						<td><input type="file" name="foto" value="Foto"></td>
+						<td><input type="file" name="foto">
+						<input type="text" style="display:none;" name="fotoTemp" readonly="readonly" value ="${ user.fotoBase64 }">
+						<input type="text" style="display:none;" name="contentTypeTemp" readonly="readonly" value ="${ user.contentType }"></td>
 					</tr>
 					<tr>
 						<td>
 							Currículo:
 						</td>
-						<td><input type="file" name="curriculo" value="curriculo"></td>
+						<td><input type="file" name="curriculo">
+						<input type="text" style="display:none;" name="fotoTempPDF" readonly="readonly" value ="${ user.curriculoBase64 }">
+						<input type="text" style="display:none;" name="contentTypeTempPDF" readonly="readonly" value ="${ user.contentTypeCurriculo }"></td>
 					</tr>
 					<tr>
 
