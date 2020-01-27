@@ -30,7 +30,7 @@
 					</tr>
 					<tr>
 						<td>Número:</td>
-						<td><input type="text" id="numero" name="numero"></td>
+						<td><input type="text" id="numero" name="numero" required></td>
 						<td>Tipo:</td>
 						<td>
 							<select id="tipo" name="tipo">

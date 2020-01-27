@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import beans.BeanCursoJsp;
 import connection.SingleConnection;
 import dao.DaoLogin;
+import utils.GenericTools;
 
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
@@ -36,11 +37,18 @@ public class LoginServlet extends HttpServlet {
 			String login = request.getParameter("login");
 			String senha = request.getParameter("senha");
 			
-			if (daoLogin.validarLogin(login, senha)) {
-				RequestDispatcher dispatcher = request.getRequestDispatcher("acessoLiberado.jsp");
-				dispatcher.forward(request, response);
+			if (!GenericTools.isNull(login)
+					&& !GenericTools.isNull(senha)) {
+
+				if (daoLogin.validarLogin(login, senha)) {
+					RequestDispatcher dispatcher = request.getRequestDispatcher("acessoLiberado.jsp");
+					dispatcher.forward(request, response);
+				} else {
+					RequestDispatcher dispatcher = request.getRequestDispatcher("acessoNegado.jsp");
+					dispatcher.forward(request, response);
+				}
 			} else {
-				RequestDispatcher dispatcher = request.getRequestDispatcher("acessoNegado.jsp");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
 				dispatcher.forward(request, response);
 			}
 		} catch(Exception e) {
