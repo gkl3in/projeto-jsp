@@ -27,18 +27,18 @@
 					<tr>
 						<td>Nome:</td>
 						<td><input type="text" id="nome" name="nome"
-							value="${produto.nome}"></td>
+							value="${produto.nome}" required></td>
 					</tr>
 
 					<tr>
 						<td>Quantidade:</td>
-						<td><input type="text" id="quantidade" name="quantidade"
-							value="${produto.quantidade}"></td>
+						<td><input type="number" pattern="[0-9]+([,\.][0-9]+)?" step="any" id="quantidade" name="quantidade"
+							value="${produto.quantidade}" required></td>
 					</tr>
 					<tr>
 						<td>Valor R$:</td>
-						<td><input type="text" id="valor" name="valor"
-							value="${produto.valor}"></td>
+						<td><input type="number" pattern="[0-9]+([,\.][0-9]+)?" step="any" id="valor" name="valor"
+							value="${produto.valor}" required></td>
 					<tr>
 						<td></td>
 						<td><input type="submit" value="Salvar"> <input type="submit"  value="Cancelar" onclick="document.getElementById('formProduto').action = 'salvarProduto?acao=reset'"></td>
