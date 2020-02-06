@@ -11,15 +11,15 @@ import beans.BeanCursoJsp;
 import connection.SingleConnection;
 
 public class DaoUsuario {
-	
+
 	private Connection connection;
-	
+
 	public DaoUsuario() {
 		connection = SingleConnection.getConnection();
 	}
 
 	public void salvar(BeanCursoJsp usuario) {
-		
+
 		try {
 			String sql = "insert into usuario(login, senha, nome, fone, cep, rua,"
 					+ " bairro, cidade, estado, fotobase64, contenttype, curriculo_foto_base64, "
@@ -43,7 +43,7 @@ public class DaoUsuario {
 			insert.execute();
 			connection.commit();
 
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			try {
 				connection.rollback();
@@ -52,15 +52,15 @@ public class DaoUsuario {
 			}
 		}
 	}
-	
-	public List<BeanCursoJsp> listarUsuarios () throws Exception {
-		
+
+	public List<BeanCursoJsp> listarUsuarios() throws Exception {
+
 		List<BeanCursoJsp> listarUsuarios = new ArrayList<BeanCursoJsp>();
-		
-		String sql = "select * from usuario order by id";
+
+		String sql = "select * from usuario where login <> 'admin' order by id";
 		PreparedStatement statement = connection.prepareStatement(sql);
 		ResultSet resultado = statement.executeQuery();
-		
+
 		while (resultado.next()) {
 
 			BeanCursoJsp usuario = new BeanCursoJsp();
@@ -74,26 +74,26 @@ public class DaoUsuario {
 			usuario.setBairro(resultado.getString("bairro"));
 			usuario.setCidade(resultado.getString("cidade"));
 			usuario.setEstado(resultado.getString("estado"));
-			//usuario.setFotoBase64(resultado.getString("fotobase64"));
+			// usuario.setFotoBase64(resultado.getString("fotobase64"));
 			usuario.setFotoBase64Miniatura(resultado.getString("fotoBase64Miniatura"));
 			usuario.setContentType(resultado.getString("contenttype"));
 			usuario.setCurriculoBase64(resultado.getString("curriculo_foto_base64"));
 			usuario.setContentTypeCurriculo(resultado.getString("content_type_curriculo"));
-			
+
 			listarUsuarios.add(usuario);
 		}
 		return listarUsuarios;
 	}
-	
-	public void delete (String id) {
-		
+
+	public void delete(String id) {
+
 		try {
-			String sql = "delete from usuario where id = '" + id + "'";
+			String sql = "delete from usuario where id = '" + id + "' and login <> 'admin' ";
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.execute();
-			
+
 			connection.commit();
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			try {
 				connection.rollback();
@@ -104,12 +104,12 @@ public class DaoUsuario {
 	}
 
 	public BeanCursoJsp consultar(String id) throws SQLException {
-		
-		String sql = "select * from usuario where id='" + id + "'";
-		
+
+		String sql = "select * from usuario where id='" + id + "' and login <> 'admin'";
+
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
 		ResultSet resultSet = preparedStatement.executeQuery();
-		
+
 		if (resultSet.next()) {
 			BeanCursoJsp beanCursoJsp = new BeanCursoJsp();
 			beanCursoJsp.setLogin(resultSet.getString("login"));
@@ -127,7 +127,7 @@ public class DaoUsuario {
 			beanCursoJsp.setContentType(resultSet.getString("contenttype"));
 			beanCursoJsp.setContentTypeCurriculo(resultSet.getString("content_type_curriculo"));
 			beanCursoJsp.setCurriculoBase64(resultSet.getString("curriculo_foto_base64"));
-			
+
 			return beanCursoJsp;
 		}
 		return null;
@@ -135,11 +135,21 @@ public class DaoUsuario {
 
 	public void atualizar(BeanCursoJsp usuario) {
 		try {
-			String sql = "update usuario set login = ?, senha = ?, nome = ?, fone = ?, cep = ?, rua = ?, "
-					+ "bairro = ?, cidade = ?, estado = ?, fotobase64 = ?, contenttype = ?, content_type_curriculo = ?, "
-					+ " curriculo_foto_base64 = ?, fotobase64miniatura = ? where id = " + usuario.getId();
-			
-			PreparedStatement statement = connection.prepareStatement(sql);
+			StringBuilder sql = new StringBuilder();
+			sql.append(" update usuario set login = ?, senha = ?, nome = ?, fone = ?, cep = ?, rua = ?, ");
+			sql.append(" bairro = ?, cidade = ?, estado = ? ");
+			if (usuario.isAtualizarImage()) {
+				sql.append(", fotobase64 = ?, contenttype = ? ");
+			}
+			if (usuario.isAtualizarPdf()) {
+				sql.append(", content_type_curriculo = ?, curriculo_foto_base64 = ? ");
+			}
+			if (usuario.isAtualizarImage()) {
+				sql.append(", fotobase64miniatura = ? ");
+			}
+			sql.append(" where id = " + usuario.getId());
+
+			PreparedStatement statement = connection.prepareStatement(sql.toString());
 			statement.setString(1, usuario.getLogin());
 			statement.setString(2, usuario.getSenha());
 			statement.setString(3, usuario.getNome());
@@ -149,16 +159,31 @@ public class DaoUsuario {
 			statement.setString(7, usuario.getBairro());
 			statement.setString(8, usuario.getCidade());
 			statement.setString(9, usuario.getEstado());
-			statement.setString(10, usuario.getFotoBase64());
-			statement.setString(11, usuario.getContentType());
-			statement.setString(12, usuario.getContentTypeCurriculo());
-			statement.setString(13, usuario.getCurriculoBase64());
-			statement.setString(14, usuario.getFotoBase64Miniatura());
+			if (usuario.isAtualizarImage()) {
+				statement.setString(10, usuario.getFotoBase64());
+				statement.setString(11, usuario.getContentType());
+			}
+			if (usuario.isAtualizarPdf()) {
+				if (usuario.isAtualizarPdf() && !usuario.isAtualizarImage()) {
+					statement.setString(10, usuario.getContentTypeCurriculo());
+					statement.setString(11, usuario.getCurriculoBase64());
+				} else {
+					statement.setString(12, usuario.getContentTypeCurriculo());
+					statement.setString(13, usuario.getCurriculoBase64());
+				}
+			} else {
+				if (usuario.isAtualizarImage()) {
+					statement.setString(12, usuario.getFotoBase64Miniatura());
+				}
+			}
+			if (usuario.isAtualizarImage() && usuario.isAtualizarPdf()) {
+				statement.setString(14, usuario.getFotoBase64Miniatura());
+			}
 
 			statement.executeUpdate();
 			connection.commit();
 
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			try {
 				connection.rollback();
@@ -167,10 +192,10 @@ public class DaoUsuario {
 			}
 		}
 	}
-	
+
 	public boolean validarLogin(String login) throws SQLException {
 		String sql = "select * from usuario where login='" + login + "'";
-		
+
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		return resultSet.next() ? false : true;

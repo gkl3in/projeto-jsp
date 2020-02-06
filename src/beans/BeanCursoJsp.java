@@ -18,6 +18,8 @@ public class BeanCursoJsp {
 	private String contentTypeCurriculo;
 	private String contentType;
 	private String tempFoto;
+	private boolean atualizarImage = true;
+	private boolean atualizarPdf = true;
 	
 	public String getFotoBase64() {
 		return fotoBase64;
@@ -114,5 +116,17 @@ public class BeanCursoJsp {
 	}
 	public void setFotoBase64Miniatura(String fotoBase64Miniatura) {
 		this.fotoBase64Miniatura = fotoBase64Miniatura;
+	}
+	public boolean isAtualizarImage() {
+		return atualizarImage;
+	}
+	public void setAtualizarImage(boolean atualizarImage) {
+		this.atualizarImage = atualizarImage;
+	}
+	public boolean isAtualizarPdf() {
+		return atualizarPdf;
+	}
+	public void setAtualizarPdf(boolean atualizarPdf) {
+		this.atualizarPdf = atualizarPdf;
 	}
 }

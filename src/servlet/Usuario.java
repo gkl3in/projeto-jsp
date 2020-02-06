@@ -161,21 +161,19 @@ public class Usuario extends HttpServlet {
 						usuario.setFotoBase64Miniatura(miniaturaBase64);
 
 					} else {
-						usuario.setFotoBase64(request.getParameter("fotoTemp"));
-						usuario.setContentType(request.getParameter("contentTypeTemp"));
+						usuario.setAtualizarImage(false);
 					}
 					
 					Part curriculoPdf = request.getPart("curriculo");
 
-					if (curriculoPdf != null && imagemFoto.getInputStream().available() > 0) {
+					if (curriculoPdf != null && curriculoPdf.getInputStream().available() > 0) {
 						String curriculoBase64 = new Base64().
 								encodeBase64String(converteStreamParaByte(curriculoPdf.getInputStream()));
 						
 						usuario.setCurriculoBase64(curriculoBase64);
 						usuario.setContentTypeCurriculo(curriculoPdf.getContentType());
 					} else {
-						usuario.setCurriculoBase64(request.getParameter("fotoTempPDF"));
-						usuario.setContentTypeCurriculo(request.getParameter("contentTypeTempPDF"));
+						usuario.setAtualizarPdf(false);
 					}
 				}
 				/* fim upload de imagens */

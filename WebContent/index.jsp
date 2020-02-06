@@ -15,6 +15,7 @@
 </head>
 <body>
 	<div class="login-page">
+		<center><h4>Projeto didático</h4></center>
   		<div class="form">
 			<form action="LoginServlet" method="post" class="login-form">
 				<input type="text" placeholder="login" id="login" name="login">

@@ -73,17 +73,13 @@
 						<td>
 							Foto:
 						</td>
-						<td><input type="file" name="foto">
-						<input type="text" style="display:none;" name="fotoTemp" readonly="readonly" value ="${ user.fotoBase64 }">
-						<input type="text" style="display:none;" name="contentTypeTemp" readonly="readonly" value ="${ user.contentType }"></td>
+						<td><input type="file" name="foto"></td>
 					</tr>
 					<tr>
 						<td>
 							Currículo:
 						</td>
-						<td><input type="file" name="curriculo">
-						<input type="text" style="display:none;" name="fotoTempPDF" readonly="readonly" value ="${ user.curriculoBase64 }">
-						<input type="text" style="display:none;" name="contentTypeTempPDF" readonly="readonly" value ="${ user.contentTypeCurriculo }"></td>
+						<td><input type="file" name="curriculo"></td>
 					</tr>
 					<tr>
 
@@ -111,17 +107,17 @@
 			<c:forEach items="${ usuarios }" var="user">
 				<tr>
 					<td style="width: 150px"><c:out value="${ user.id }"></c:out></td>
-					<c:if test="${ user.fotoBase64Miniatura.isEmpty() == false}">
+					<c:if test="${ user.fotoBase64Miniatura != null}">
 						<td><a href="salvarUsuario?acao=download&tipo=imagem&user=${ user.id }"><img src="<c:out value="${ user.fotoBase64Miniatura }"></c:out>" width="32px" height="32px"
 							title="Imagem do usuário"></a></td>
 					</c:if>
-					<c:if test="${ user.fotoBase64Miniatura.isEmpty() == true}">
+					<c:if test="${ user.fotoBase64Miniatura == null}">
 						<td><img alt="Imagem User" src="resources/img/iconeUser.jpg" width="32px" height="32px" onclick="alert('Não possui imagem')"> </td>
 					</c:if>
-					<c:if test="${ user.curriculoBase64.isEmpty() == false}">
+					<c:if test="${ user.curriculoBase64 != null}">
 						<td><a href="salvarUsuario?acao=download&tipo=curriculo&user=${ user.id }"><img alt="pdf" src="resources/img/pdf-icon.png" width="32px" height="32px"></a></td>
 					</c:if>
-					<c:if test="${ user.curriculoBase64.isEmpty() == true}">
+					<c:if test="${ user.curriculoBase64 == null}">
 						<td><img alt="Imagem User" src="resources/img/pdfoff.jpg" width="32px" height="32px" onclick="alert('Não possui PDF');"> </td>
 					</c:if>
 					<td><c:out value="${ user.nome }"></c:out></td>
