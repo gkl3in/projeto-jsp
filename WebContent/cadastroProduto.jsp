@@ -69,7 +69,7 @@
 					<td><c:out value="${produto.quantidade}"></c:out></td>
 					<td><c:out value="${produto.valor}"></c:out></td>
 
-					<td><a href="salvarProduto?acao=delete&produto=${produto.id}"><img
+					<td><a href="salvarProduto?acao=delete&produto=${produto.id}" onclick="return confirm('Confirmar a exclusão?')"><img
 							src="resources/img/excluir.png" alt="excluir" title="Excluir"
 							width="20px" height="20px"> </a></td>
 					<td><a href="salvarProduto?acao=editar&produto=${produto.id}"><img

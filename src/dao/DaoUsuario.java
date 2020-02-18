@@ -23,8 +23,8 @@ public class DaoUsuario {
 		try {
 			String sql = "insert into usuario(login, senha, nome, fone, cep, rua,"
 					+ " bairro, cidade, estado, fotobase64, contenttype, curriculo_foto_base64, "
-					+ "content_type_curriculo, fotoBase64Miniatura ) "
-					+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+					+ "content_type_curriculo, fotoBase64Miniatura, ativo ) "
+					+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement insert = connection.prepareStatement(sql);
 			insert.setString(1, usuario.getLogin());
 			insert.setString(2, usuario.getSenha());
@@ -40,6 +40,7 @@ public class DaoUsuario {
 			insert.setString(12, usuario.getCurriculoBase64());
 			insert.setString(13, usuario.getContentTypeCurriculo());
 			insert.setString(14, usuario.getFotoBase64Miniatura());
+			insert.setBoolean(15, usuario.isAtivo());
 			insert.execute();
 			connection.commit();
 
@@ -137,7 +138,7 @@ public class DaoUsuario {
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append(" update usuario set login = ?, senha = ?, nome = ?, fone = ?, cep = ?, rua = ?, ");
-			sql.append(" bairro = ?, cidade = ?, estado = ? ");
+			sql.append(" bairro = ?, cidade = ?, estado = ?, ativo = ? ");
 			if (usuario.isAtualizarImage()) {
 				sql.append(", fotobase64 = ?, contenttype = ? ");
 			}
@@ -159,25 +160,26 @@ public class DaoUsuario {
 			statement.setString(7, usuario.getBairro());
 			statement.setString(8, usuario.getCidade());
 			statement.setString(9, usuario.getEstado());
+			statement.setBoolean(10, usuario.isAtivo());
 			if (usuario.isAtualizarImage()) {
-				statement.setString(10, usuario.getFotoBase64());
-				statement.setString(11, usuario.getContentType());
+				statement.setString(11, usuario.getFotoBase64());
+				statement.setString(12, usuario.getContentType());
 			}
 			if (usuario.isAtualizarPdf()) {
 				if (usuario.isAtualizarPdf() && !usuario.isAtualizarImage()) {
-					statement.setString(10, usuario.getContentTypeCurriculo());
-					statement.setString(11, usuario.getCurriculoBase64());
+					statement.setString(11, usuario.getContentTypeCurriculo());
+					statement.setString(12, usuario.getCurriculoBase64());
 				} else {
-					statement.setString(12, usuario.getContentTypeCurriculo());
-					statement.setString(13, usuario.getCurriculoBase64());
+					statement.setString(13, usuario.getContentTypeCurriculo());
+					statement.setString(14, usuario.getCurriculoBase64());
 				}
 			} else {
 				if (usuario.isAtualizarImage()) {
-					statement.setString(12, usuario.getFotoBase64Miniatura());
+					statement.setString(13, usuario.getFotoBase64Miniatura());
 				}
 			}
 			if (usuario.isAtualizarImage() && usuario.isAtualizarPdf()) {
-				statement.setString(14, usuario.getFotoBase64Miniatura());
+				statement.setString(15, usuario.getFotoBase64Miniatura());
 			}
 
 			statement.executeUpdate();

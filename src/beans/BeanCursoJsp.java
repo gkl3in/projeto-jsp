@@ -20,6 +20,7 @@ public class BeanCursoJsp {
 	private String tempFoto;
 	private boolean atualizarImage = true;
 	private boolean atualizarPdf = true;
+	private boolean ativo = true;
 	
 	public String getFotoBase64() {
 		return fotoBase64;
@@ -128,5 +129,11 @@ public class BeanCursoJsp {
 	}
 	public void setAtualizarPdf(boolean atualizarPdf) {
 		this.atualizarPdf = atualizarPdf;
+	}
+	public boolean isAtivo() {
+		return ativo;
+	}
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	}
 }

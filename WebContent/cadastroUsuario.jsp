@@ -74,6 +74,9 @@
 							Foto:
 						</td>
 						<td><input type="file" name="foto"></td>
+						
+						<td>Ativo:</td>
+						<td><input type="checkbox" id="ativo" name="ativo"></td>
 					</tr>
 					<tr>
 						<td>
@@ -122,7 +125,7 @@
 					</c:if>
 					<td><c:out value="${ user.nome }"></c:out></td>
 
-					<td><a href="salvarUsuario?acao=delete&user=${ user.id }"><img
+					<td><a href="salvarUsuario?acao=delete&user=${ user.id }" onclick="return confirm('Confirmar a exclusão?')"><img
 							src="resources/img/excluir.png" width="32px" height="32px"
 							title="Excluir"></a></td>
 
