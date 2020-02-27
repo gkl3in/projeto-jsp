@@ -80,6 +80,7 @@ public class DaoUsuario {
 			usuario.setContentType(resultado.getString("contenttype"));
 			usuario.setCurriculoBase64(resultado.getString("curriculo_foto_base64"));
 			usuario.setContentTypeCurriculo(resultado.getString("content_type_curriculo"));
+			usuario.setAtivo(resultado.getBoolean("ativo"));
 
 			listarUsuarios.add(usuario);
 		}
@@ -128,6 +129,7 @@ public class DaoUsuario {
 			beanCursoJsp.setContentType(resultSet.getString("contenttype"));
 			beanCursoJsp.setContentTypeCurriculo(resultSet.getString("content_type_curriculo"));
 			beanCursoJsp.setCurriculoBase64(resultSet.getString("curriculo_foto_base64"));
+			beanCursoJsp.setAtivo(resultSet.getBoolean("ativo"));
 
 			return beanCursoJsp;
 		}
