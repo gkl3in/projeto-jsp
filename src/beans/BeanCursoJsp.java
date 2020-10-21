@@ -18,6 +18,7 @@ public class BeanCursoJsp {
 	private String contentTypeCurriculo;
 	private String contentType;
 	private String tempFoto;
+	private String sexo;
 	private boolean atualizarImage = true;
 	private boolean atualizarPdf = true;
 	private boolean ativo = true;
@@ -135,5 +136,11 @@ public class BeanCursoJsp {
 	}
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
+	}
+	public String getSexo() {
+		return sexo;
+	}
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
 	}
 }

@@ -116,6 +116,7 @@ public class Usuario extends HttpServlet {
 			String login = request.getParameter("login");
 			String senha = request.getParameter("senha");
 			String nome = request.getParameter("nome");
+
 			BeanCursoJsp usuario = new BeanCursoJsp();
 			usuario.setLogin(login);
 			usuario.setSenha(senha);
@@ -127,6 +128,7 @@ public class Usuario extends HttpServlet {
 			usuario.setCidade(request.getParameter("cidade"));
 			usuario.setCep(request.getParameter("cep"));
 			usuario.setEstado(request.getParameter("uf"));
+			usuario.setSexo(request.getParameter("sexo"));
 			
 			if (request.getParameter("ativo") != null 
 					&& request.getParameter("ativo").equalsIgnoreCase("on")) {

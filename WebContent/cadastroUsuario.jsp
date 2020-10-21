@@ -95,6 +95,35 @@
 							Currículo:
 						</td>
 						<td><input type="file" name="curriculo"></td>
+						
+						<td>Sexo:</td>
+						<td>
+							<input type="radio" name="sexo"
+							
+							<%
+								if(request.getAttribute("user") != null){
+									BeanCursoJsp user = (BeanCursoJsp) request.getAttribute("user");
+									if(user.getSexo().equalsIgnoreCase("masculino")){
+										out.print(" ");
+										out.print("checked=\"checked\"");
+										out.print(" ");
+									}
+								}
+							%>
+							 value="masculino">Masculino</input>
+							<input type="radio" name="sexo"
+														<%
+								if(request.getAttribute("user") != null){
+									BeanCursoJsp user = (BeanCursoJsp) request.getAttribute("user");
+									if(user.getSexo().equalsIgnoreCase("feminino")){
+										out.print(" ");
+										out.print("checked=\"checked\"");
+										out.print(" ");
+									}
+								}
+							%>
+							 value="feminino">Feminino</input>
+						</td>
 					</tr>
 					<tr>
 
